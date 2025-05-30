@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>interactive-template</title>
+    <link rel="stylesheet" href="styles/null.css" />
+    <link rel="stylesheet" href="styles/style.css" />
+    <link rel="stylesheet" href="styles/popup.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <header class="header">
+        <div class="logo">
+          <img src="img/logo.png" alt="logo" />
+        </div>
+      </header>
+      <main class="main">
+        <section class="banner">
+          <h1 class="banner__title">
+            Congratulations, <br />
+            You're participating in the Pringles Stack & Win Giveaway!
+          </h1>
+          <p class="banner__text">
+            Today, 185 lucky winners will receive <br />
+            a Free Pringles Snack Pack — loaded with your favorite flavors.
+          </p>
+        </section>
+        <section class="game">
+          <div class="game__container">
+            <h2 class="game__title">
+              <b>Your mission: </b> Find the stack with the hidden prize inside! <br />
+              <b>You have 3 attempts. Good luck!</b>
+            </h2>
+            <p id="" class="gape__time">05:00</p>
+            <div class="game__items">
+              <div class="game__item">
+                <img src="img/step0.png" alt="box" />
+              </div>
+              <div class="game__item">
+                <img src="img/step0.png" alt="box" />
+              </div>
+              <div class="game__item">
+                <img src="img/step0.png" alt="box" />
+              </div>
+              <div class="game__item">
+                <img src="img/step0.png" alt="box" />
+              </div>
+              <div class="game__item">
+                <img src="img/step0.png" alt="box" />
+              </div>
+              <div class="game__item">
+                <img src="img/step0.png" alt="box" />
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div id="popup1" class="popup-overlay">
+      <div class="popup">
+        <h2>Sorry, this can is empty.</h2>
+        <p>You have 2 attempts left.</p>
+        <button class="popup-close">ОК</button>
+      </div>
+    </div>
+
+    <div id="popup2" class="popup-overlay">
+      <div class="popup popup_big">
+        <img src="img/step2.png" alt="" />
+        <h2>Congratulations!</h2>
+        <h3>
+          You've won a <br />
+          <b>Free Pringles Snack Pack!</b>
+        </h3>
+        <h4>Here's what to do next:</h4>
+        <ul class="popup__items">
+          <li class="popup__item">
+            1. Click <b>Next</b> and enter your contact information. <br />
+            2. You'll receive a confirmation email with delivery details.<br />
+            3. Get ready to enjoy a full stack of iconic Pringles flavors — absolutely free. Confirm
+            your email to receive your gift.
+          </li>
+        </ul>
+        <button class="final_btn">Claim your snack pack now and crunch into the win!</button>
+      </div>
+    </div>
+
+    <div class="editor-panel">
+      <h3>Редактирование шаблона</h3>
+      <div>
+        <label for="banner-title">Заголовок баннера:</label>
+        <input
+          type="text"
+          id="banner-title"
+          value="Congratulations, You're participating in the Pringles Stack & Win Giveaway!"
+        />
+      </div>
+      <div>
+        <label for="banner-text">Текст баннера:</label>
+        <input
+          type="text"
+          id="banner-text"
+          value="Today, 185 lucky winners will receive a Free Pringles Snack Pack — loaded with your favorite flavors."
+        />
+      </div>
+      <div>
+        <label for="game-title">Заголовок игры:</label>
+        <input
+          type="text"
+          id="game-title"
+          value="Your mission: Find the stack with the hidden prize inside! You have 3 attempts. Good luck!"
+        />
+      </div>
+      <div>
+        <label for="popup1-title">Заголовок попапа 1:</label>
+        <input type="text" id="popup1-title" value="Sorry, this can is empty." />
+      </div>
+      <div>
+        <label for="popup1-text">Текст попапа 1:</label>
+        <input type="text" id="popup1-text" value="You have 2 attempts left." />
+      </div>
+      <div>
+        <label for="popup2-title">Заголовок попапа 2:</label>
+        <input type="text" id="popup2-title" value="Congratulations!" />
+      </div>
+      <div>
+        <label for="popup2-subtitle">Подзаголовок попапа 2:</label>
+        <input type="text" id="popup2-subtitle" value="You've won a Free Pringles Snack Pack!" />
+      </div>
+      <div>
+        <label for="popup2-instructions">Инструкции попапа 2:</label>
+        <textarea id="popup2-instructions">
+1. Click Next and enter your contact information. 2. You'll receive a confirmation email with delivery details. 3. Get ready to enjoy a full stack of iconic Pringles flavors — absolutely free. Confirm your email to receive your gift.</textarea
+        >
+      </div>
+      <div>
+        <label for="final-btn-text">Текст кнопки финального попапа:</label>
+        <input
+          type="text"
+          id="final-btn-text"
+          value="Claim your snack pack now and crunch into the win!"
+        />
+      </div>
+      <div>
+        <label for="logo-img">Логотип:</label>
+        <input type="file" id="logo-img" accept="image/*" />
+      </div>
+      <div>
+        <label for="step0-img">Изображение банки:</label>
+        <input type="file" id="step0-img" accept="image/*" />
+      </div>
+      <div>
+        <label for="step1-img">Изображение пустой банки:</label>
+        <input type="file" id="step1-img" accept="image/*" />
+      </div>
+      <div>
+        <label for="step2-img">Изображение банки с призом:</label>
+        <input type="file" id="step2-img" accept="image/*" />
+      </div>
+      <div>
+        <label for="background-color">Цвет фона:</label>
+        <input type="color" id="background-color" value="#ffffff" />
+      </div>
+      <div>
+        <label for="logo-size">Размер логотипа (px):</label>
+        <input type="number" id="logo-size" value="52" min="20" max="200" />
+      </div>
+      <div>
+        <label for="game-item-size">Размер банок (px):</label>
+        <input type="number" id="game-item-size" value="144" min="50" max="300" />
+      </div>
+      <div>
+        <label for="banner-bg-color">Цвет фона баннера:</label>
+        <input type="color" id="banner-bg-color" value="#c10c1a" />
+      </div>
+      <button id="download-btn">Скачать измененный код</button>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const button = document.querySelector('.final_btn');
+        if (button) {
+          button.addEventListener('click', function (event) {
+            event.preventDefault();
+            window.location.href = '/click.php?lp=1&uclick=ojvcbg6o';
+          });
+        }
+
+        function updateContent() {
+          document.querySelector('.banner__title').innerHTML = document
+            .getElementById('banner-title')
+            .value.replace(/\n/g, '<br>');
+          document.querySelector('.banner__text').innerHTML = document
+            .getElementById('banner-text')
+            .value.replace(/\n/g, '<br>');
+          document.querySelector('.game__title').innerHTML = document
+            .getElementById('game-title')
+            .value.replace(/\n/g, '<br>');
+          document.querySelector('#popup1 h2').textContent =
+            document.getElementById('popup1-title').value;
+          document.querySelector('#popup1 p').textContent =
+            document.getElementById('popup1-text').value;
+          document.querySelector('#popup2 h2').textContent =
+            document.getElementById('popup2-title').value;
+          document.querySelector('#popup2 h3').innerHTML = document
+            .getElementById('popup2-subtitle')
+            .value.replace(/\n/g, '<br>');
+          document.querySelector('#popup2 .popup__item').innerHTML = document
+            .getElementById('popup2-instructions')
+            .value.replace(/\n/g, '<br>');
+          document.querySelector('.final_btn').textContent =
+            document.getElementById('final-btn-text').value;
+
+          // Изменение размеров изображений
+          document.querySelector('.logo img').style.width =
+            document.getElementById('logo-size').value + 'px';
+          document.querySelectorAll('.game__item img').forEach((img) => {
+            img.style.width = document.getElementById('game-item-size').value + 'px';
+          });
+
+          // Изменение цвета фона баннера
+          document.querySelector('.banner').style.backgroundColor =
+            document.getElementById('banner-bg-color').value;
+
+          // Обработка загрузки изображений
+          const logoFile = document.getElementById('logo-img').files[0];
+          if (logoFile) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              document.querySelector('.logo img').src = e.target.result;
+            };
+            reader.readAsDataURL(logoFile);
+          }
+
+          const step0File = document.getElementById('step0-img').files[0];
+          if (step0File) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              document.querySelectorAll('.game__item img').forEach((img) => {
+                img.src = e.target.result;
+              });
+            };
+            reader.readAsDataURL(step0File);
+          }
+
+          const step1File = document.getElementById('step1-img').files[0];
+          if (step1File) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              window.step1ImageUrl = e.target.result;
+            };
+            reader.readAsDataURL(step1File);
+          }
+
+          const step2File = document.getElementById('step2-img').files[0];
+          if (step2File) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+              window.step2ImageUrl = e.target.result;
+            };
+            reader.readAsDataURL(step2File);
+          }
+
+          document.body.style.backgroundColor = document.getElementById('background-color').value;
+        }
+
+        const inputs = document.querySelectorAll('.editor-panel input, .editor-panel textarea');
+        inputs.forEach((input) => {
+          input.addEventListener('input', updateContent);
+        });
+
+        document.getElementById('download-btn').addEventListener('click', async function () {
+          // Создаем объект для хранения всех файлов
+          const files = {
+            'index.html': document.documentElement.outerHTML,
+          };
+
+          // Загружаем содержимое js-файла
+          try {
+            const jsResponse = await fetch('js/script.js');
+            const jsContent = await jsResponse.text();
+            files['js/script.js'] = jsContent;
+          } catch (error) {
+            console.error('Ошибка загрузки js-файла:', error);
+            files['js/script.js'] = '// Ошибка загрузки файла';
+          }
+
+          // Загружаем содержимое CSS-файлов
+          try {
+            const styleResponse = await fetch('styles/style.css');
+            const styleContent = await styleResponse.text();
+            files['styles/style.css'] = styleContent;
+          } catch (error) {
+            console.error('Ошибка загрузки style.css:', error);
+            files['styles/style.css'] = '/* Ошибка загрузки файла */';
+          }
+
+          try {
+            const popupResponse = await fetch('styles/popup.css');
+            const popupContent = await popupResponse.text();
+            files['styles/popup.css'] = popupContent;
+          } catch (error) {
+            console.error('Ошибка загрузки popup.css:', error);
+            files['styles/popup.css'] = '/* Ошибка загрузки файла */';
+          }
+
+          try {
+            const nullResponse = await fetch('styles/null.css');
+            const nullContent = await nullResponse.text();
+            files['styles/null.css'] = nullContent;
+          } catch (error) {
+            console.error('Ошибка загрузки null.css:', error);
+            files['styles/null.css'] = '/* Ошибка загрузки файла */';
+          }
+
+          // Создаем zip-архив
+          const zip = new JSZip();
+
+          // Добавляем файлы в архив
+          Object.keys(files).forEach((fileName) => {
+            zip.file(fileName, files[fileName]);
+          });
+
+          // Добавляем изображения
+          const images = document.querySelectorAll('img');
+          const imagePromises = Array.from(images).map((img) => {
+            const imgUrl = img.src;
+            const imgName = imgUrl.split('/').pop();
+            return fetch(imgUrl)
+              .then((response) => response.blob())
+              .then((blob) => {
+                zip.file(`img/${imgName}`, blob);
+              });
+          });
+
+          // Добавляем step1.png и step2.png, если они были загружены
+          if (window.step1ImageUrl) {
+            const step1Blob = await fetch(window.step1ImageUrl).then((r) => r.blob());
+            zip.file('img/step1.png', step1Blob);
+          }
+
+          if (window.step2ImageUrl) {
+            const step2Blob = await fetch(window.step2ImageUrl).then((r) => r.blob());
+            zip.file('img/step2.png', step2Blob);
+          }
+
+          // Ждем загрузки всех изображений
+          await Promise.all(imagePromises);
+
+          // Генерируем и скачиваем zip-архив
+          zip.generateAsync({ type: 'blob' }).then((content) => {
+            const url = URL.createObjectURL(content);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'modified_template.zip';
+            a.click();
+            URL.revokeObjectURL(url);
+          });
+        });
+
+        // Обновляем обработчик клика по банкам
+        const gameItems = document.querySelectorAll('.game__item');
+        let prizeIndex = 1;
+        gameItems.forEach((item, index) => {
+          item.addEventListener('click', () => {
+            const img = item.querySelector('img');
+
+            if (!img.src.includes('step0.png')) return;
+
+            if (prizeIndex === 1) {
+              img.src = window.step2ImageUrl || 'img/step2.png';
+              openPopup(popup2);
+              prizeIndex++;
+            } else {
+              img.src = window.step1ImageUrl || 'img/step1.png';
+              openPopup(popup1);
+              prizeIndex++;
+            }
+          });
+        });
+      });
+    </script>
+
+    <script src="js/script.js"></script>
+  </body>
+</html>
