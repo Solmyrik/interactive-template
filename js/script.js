@@ -47,18 +47,20 @@ document.querySelectorAll('.popup-close').forEach((btn) => {
 
 let prizeIndex = 0;
 
-gameItems.forEach((item, index) => {
+gameItems.forEach((item) => {
   item.addEventListener('click', () => {
     const img = item.querySelector('img');
-
-    if (!img.src.includes('step0.png')) return;
+    const isDefaultStep0 = img.src.includes('step0.png');
+    const isCustomStep0 = window.step0ImageUrl && img.src === window.step0ImageUrl;
+    const isBase64Step0 = img.src.startsWith('data:image');
+    if (!isDefaultStep0 && !isCustomStep0 && !isBase64Step0) return;
 
     if (prizeIndex === 1) {
-      img.src = 'img/step2.png';
+      img.src = window.step2ImageUrl || 'img/step2.png';
       openPopup(popup2);
       prizeIndex++;
     } else {
-      img.src = 'img/step1.png';
+      img.src = window.step1ImageUrl || 'img/step1.png';
       openPopup(popup1);
       prizeIndex++;
     }
