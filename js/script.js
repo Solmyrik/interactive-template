@@ -1,6 +1,9 @@
 const timerElem = document.querySelector('.gape__time');
-
 let totalSeconds = 5 * 60;
+let intervalId = null;
+
+// Проверяем, находимся ли мы в режиме редактирования
+const isEditMode = document.querySelector('.editor-panel') !== null;
 
 function updateTimer() {
   const minutes = Math.floor(totalSeconds / 60);
@@ -16,9 +19,31 @@ function updateTimer() {
   }
 }
 
-updateTimer();
+// Функция для установки времени из редактора
+function setTimerFromEditor(timeStr) {
+  const [minutes, seconds] = timeStr.split(':').map(Number);
+  totalSeconds = minutes * 60 + seconds;
+  timerElem.textContent = timeStr;
+}
 
-const intervalId = setInterval(updateTimer, 1000);
+// Запускаем таймер только если мы не в режиме редактирования
+if (!isEditMode) {
+  updateTimer();
+  intervalId = setInterval(updateTimer, 1000);
+}
+
+// Слушаем изменения времени из редактора
+if (isEditMode) {
+  const timeInput = document.getElementById('game-time');
+  if (timeInput) {
+    timeInput.addEventListener('input', (e) => {
+      const timePattern = /^([0-5][0-9]):([0-5][0-9])$/;
+      if (timePattern.test(e.target.value)) {
+        setTimerFromEditor(e.target.value);
+      }
+    });
+  }
+}
 
 const gameItems = document.querySelectorAll('.game__item');
 

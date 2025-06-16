@@ -7,6 +7,55 @@
     <link rel="stylesheet" href="styles/null.css" />
     <link rel="stylesheet" href="styles/style.css" />
     <link rel="stylesheet" href="styles/popup.css" />
+    <style>
+      .editor-toggle {
+        position: fixed;
+        top: 20px;
+        right: 320px;
+        z-index: 1001;
+        background: #c10c1a;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: right 0.3s ease;
+      }
+
+      .editor-toggle:hover {
+        background: #a00a16;
+      }
+
+      .editor-panel {
+        transition: transform 0.3s ease;
+      }
+
+      .editor-panel.hidden {
+        transform: translateX(100%);
+      }
+
+      .editor-toggle.hidden {
+        right: 20px;
+      }
+
+      .editor-reset {
+        width: 100%;
+        padding: 10px;
+        background: #f44336;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        margin-top: 20px;
+        transition: background 0.3s;
+      }
+
+      .editor-reset:hover {
+        background: #d32f2f;
+      }
+    </style>
   </head>
   <body>
     <div class="wrapper">
@@ -17,22 +66,22 @@
       </header>
       <main class="main">
         <section class="banner">
-          <h1 class="banner__title">
+          <h1 class="banner__title" data-field="banner-title">
             Congratulations, <br />
             You're participating in the Pringles Stack & Win Giveaway!
           </h1>
-          <p class="banner__text">
+          <p class="banner__text" data-field="banner-text">
             Today, 185 lucky winners will receive <br />
             a Free Pringles Snack Pack — loaded with your favorite flavors.
           </p>
         </section>
         <section class="game">
           <div class="game__container">
-            <h2 class="game__title">
+            <h2 class="game__title" data-field="game-title">
               <b>Your mission: </b> Find the stack with the hidden prize inside! <br />
               <b>You have 3 attempts. Good luck!</b>
             </h2>
-            <p id="" class="gape__time">05:00</p>
+            <p class="gape__time" data-field="game-time">05:00</p>
             <div class="game__items">
               <div class="game__item">
                 <img src="img/step0.png" alt="box" />
@@ -60,8 +109,8 @@
 
     <div id="popup1" class="popup-overlay">
       <div class="popup">
-        <h2>Sorry, this can is empty.</h2>
-        <p>You have 2 attempts left.</p>
+        <h2 data-field="popup1-title">Sorry, this can is empty.</h2>
+        <p data-field="popup1-text">You have 2 attempts left.</p>
         <button class="popup-close">ОК</button>
       </div>
     </div>
@@ -69,24 +118,23 @@
     <div id="popup2" class="popup-overlay">
       <div class="popup popup_big">
         <img src="img/step2.png" alt="" />
-        <h2>Congratulations!</h2>
-        <h3>
+        <h2 data-field="popup2-title">Congratulations!</h2>
+        <h3 data-field="popup2-subtitle">
           You've won a <br />
           <b>Free Pringles Snack Pack!</b>
         </h3>
         <h4>Here's what to do next:</h4>
-        <ul class="popup__items">
-          <li class="popup__item">
-            1. Click <b>Next</b> and enter your contact information. <br />
-            2. You'll receive a confirmation email with delivery details.<br />
-            3. Get ready to enjoy a full stack of iconic Pringles flavors — absolutely free. Confirm
-            your email to receive your gift.
-          </li>
-        </ul>
-        <button class="final_btn">Claim your snack pack now and crunch into the win!</button>
+        <div class="popup__item" data-field="popup2-instructions">
+          1. Click <b>Next</b> and enter your contact information. <br />
+          2. You'll receive a confirmation email with delivery details.<br />
+          3. Get ready to enjoy a full stack of iconic Pringles flavors — absolutely free. Confirm
+          your email to receive your gift.
+        </div>
+        <button class="final_btn" data-field="final-btn-text">Claim your snack pack now and crunch into the win!</button>
       </div>
     </div>
 
+    <button class="editor-toggle">Скрыть панель</button>
     <div class="editor-panel">
       <h3>Редактирование шаблона</h3>
       <div>
@@ -112,6 +160,10 @@
           id="game-title"
           value="Your mission: Find the stack with the hidden prize inside! You have 3 attempts. Good luck!"
         />
+      </div>
+      <div>
+        <label for="game-time">Время игры (мм:сс):</label>
+        <input type="text" id="game-time" value="05:00" pattern="[0-9]{2}:[0-9]{2}" placeholder="мм:сс" />
       </div>
       <div>
         <label for="popup1-title">Заголовок попапа 1:</label>
@@ -176,10 +228,12 @@
         <input type="color" id="banner-bg-color" value="#c10c1a" />
       </div>
       <button id="download-btn">Скачать измененный код</button>
+      <button class="editor-reset" onclick="resetToBase()">Вернуться к базовой версии</button>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <script src="js/editor.js"></script>
     <script src="js/script.js"></script>
+    <script src="js/toggle.js"></script>
   </body>
 </html>
