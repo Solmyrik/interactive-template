@@ -441,35 +441,90 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  downloadButton.addEventListener('click', async () => {
-    try {
-      const zip = new JSZip();
+  downloadButton.addEventListener('click', async function() {
+    // Get the current HTML content
+    let htmlContent = document.documentElement.outerHTML;
+    
+    // Remove the authentication script
+    htmlContent = htmlContent.replace(/<script>\s*\/\/ Check if user is authenticated[\s\S]*?<\/script>/g, '');
+    
+    // Remove the auth.js script loading
+    htmlContent = htmlContent.replace(/<script>\s*\/\/ Load auth script only in web version[\s\S]*?<\/script>/g, '');
+    
+    // Remove the "Назад" button
+    htmlContent = htmlContent.replace(/<a href="home\.html" class="logout-button">Назад<\/a>/g, '');
+    
+    // Remove editor panel and toggle button
+    htmlContent = htmlContent.replace(/<button class="editor-toggle">.*?<\/button>/g, '');
+    htmlContent = htmlContent.replace(/<div class="editor-panel">[\s\S]*?<\/div>/g, '');
+    
+    // Add display:none style for editor panel
+    htmlContent = htmlContent.replace(/<style>/g, '<style>\n.editor-panel { display: none !important; }\n');
+    
+    // Add final button click handler script
+    htmlContent = htmlContent.replace(/<\/body>/g, `
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const button = document.querySelector('.final_btn');
 
-      // Клонируем документ
-      const docClone = document.cloneNode(true);
-      
-      // Удаляем панель редактирования и кнопку переключения
-      const editorPanel = docClone.querySelector('.editor-panel');
-      const editorToggle = docClone.querySelector('.editor-toggle');
-      if (editorPanel) editorPanel.remove();
-      if (editorToggle) editorToggle.remove();
+        if (button) {
+          button.addEventListener('click', function (event) {
+            event.preventDefault();
 
-      // Удаляем скрипты редактора
-      const scripts = docClone.querySelectorAll('script');
-      scripts.forEach(script => {
-        if (script.src.includes('editor.js') || script.src.includes('toggle.js')) {
-          script.remove();
+            window.location.href = '/click.php?lp=1&uclick=ojvcbg6o';
+          });
         }
       });
+    </script>
+    </body>`);
+    
+    // Restore original image paths
+    htmlContent = htmlContent.replace(/src="data:image\/[^"]+"/g, (match) => {
+      const img = document.querySelector(`img[src="${match.slice(5, -1)}"]`);
+      if (img) {
+        if (img.closest('.logo')) {
+          return 'src="img/logo.png"';
+        } else if (img.closest('.game__item')) {
+          return 'src="img/step0.png"';
+        } else if (img.closest('#popup2')) {
+          return 'src="img/step2.png"';
+        }
+      }
+      return match;
+    });
+    
+    // Create a zip file
+    const zip = new JSZip();
+    
+    // Add the modified HTML file
+    zip.file("index.html", htmlContent);
+    
+    // Add other necessary files
+    const files = [
+      'styles/null.css',
+      'styles/style.css',
+      'styles/popup.css',
+      'js/toggle.js'
+    ];
+    
+    // Add each file to the zip
+    for (const file of files) {
+      try {
+        const response = await fetch(file);
+        const content = await response.text();
+        zip.file(file, content);
+      } catch (error) {
+        console.error(`Error loading file ${file}:`, error);
+      }
+    }
 
-      // Создаем новый script.js с обновленным таймером
-      const timeInput = document.getElementById('game-time');
-      const timeValue = timeInput ? timeInput.value : '05:00';
-      const [minutes, seconds] = timeValue.split(':').map(Number);
-      const totalSeconds = minutes * 60 + seconds;
+    // Create modified script.js
+    const timeInput = document.getElementById('game-time');
+    const timeValue = timeInput ? timeInput.value : '05:00';
+    const [minutes, seconds] = timeValue.split(':').map(Number);
+    const totalSeconds = minutes * 60 + seconds;
 
-      const scriptContent = `
-// Таймер
+    const scriptContent = `
 const timerElem = document.querySelector('.gape__time');
 let totalSeconds = ${totalSeconds};
 let intervalId = null;
@@ -490,7 +545,7 @@ function updateTimer() {
 updateTimer();
 intervalId = setInterval(updateTimer, 1000);
 
-// Попапы
+const gameItems = document.querySelectorAll('.game__item');
 const popup1 = document.getElementById('popup1');
 const popup2 = document.getElementById('popup2');
 
@@ -514,8 +569,6 @@ document.querySelectorAll('.popup-close').forEach((btn) => {
   });
 });
 
-// Игра
-const gameItems = document.querySelectorAll('.game__item');
 let prizeIndex = 0;
 
 gameItems.forEach((item) => {
@@ -536,85 +589,36 @@ gameItems.forEach((item) => {
   });
 });`;
 
-      // Обновляем пути к изображениям в HTML
-      const htmlContent = docClone.documentElement.outerHTML;
-      const updatedHtml = htmlContent
-        .replace(/src="[^"]+"/g, (match) => {
-          const src = match.slice(5, -1);
-          if (src.startsWith('data:')) {
-            // Для data URL используем имя файла из оригинального изображения
-            const originalImg = document.querySelector(`img[src="${src}"]`);
-            if (originalImg) {
-              let imageData;
-              if (window.logoImageUrl && originalImg.src === window.logoImageUrl.data) {
-                imageData = window.logoImageUrl;
-              } else if (window.step0ImageUrl && originalImg.src === window.step0ImageUrl.data) {
-                imageData = window.step0ImageUrl;
-              } else if (window.step1ImageUrl && originalImg.src === window.step1ImageUrl.data) {
-                imageData = window.step1ImageUrl;
-              } else if (window.step2ImageUrl && originalImg.src === window.step2ImageUrl.data) {
-                imageData = window.step2ImageUrl;
-              }
-              if (imageData) {
-                return `src="img/${imageData.name}"`;
-              }
-            }
-          }
-          // Для обычных путей просто обновляем на относительный путь
-          const fileName = src.split('/').pop();
-          return `src="img/${fileName}"`;
-        })
-        .replace(/src="img\/script\.js"/g, 'src="js/script.js"'); // Исправляем путь к script.js
+    zip.file('js/script.js', scriptContent);
 
-      // Добавляем файлы в zip
-      zip.file('index.html', updatedHtml);
-      zip.file('js/script.js', scriptContent);
+    // Add images to the zip
+    const images = [
+      { data: window.logoImageUrl, name: 'logo.png' },
+      { data: window.step0ImageUrl, name: 'step0.png' },
+      { data: window.step1ImageUrl, name: 'step1.png' },
+      { data: window.step2ImageUrl, name: 'step2.png' }
+    ];
 
-      // Добавляем CSS файлы
-      const cssFiles = ['styles/null.css', 'styles/style.css', 'styles/popup.css'];
-      for (const cssFile of cssFiles) {
+    for (const image of images) {
+      if (image.data) {
         try {
-          const response = await fetch(cssFile);
-          if (!response.ok) throw new Error(`Failed to fetch ${cssFile}`);
-          const cssContent = await response.text();
-          zip.file(cssFile, cssContent);
+          const response = await fetch(image.data.data);
+          if (!response.ok) throw new Error(`Failed to fetch image ${image.name}`);
+          const blob = await response.blob();
+          zip.file(`img/${image.name}`, blob);
         } catch (error) {
-          console.error(`Error fetching ${cssFile}:`, error);
+          console.error(`Error fetching image ${image.name}:`, error);
         }
       }
-
-      // Добавляем изображения
-      const images = [
-        { data: window.logoImageUrl, name: 'logo.png' },
-        { data: window.step0ImageUrl, name: 'step0.png' },
-        { data: window.step1ImageUrl, name: 'step1.png' },
-        { data: window.step2ImageUrl, name: 'step2.png' }
-      ];
-
-      for (const image of images) {
-        if (image.data) {
-          try {
-            const response = await fetch(image.data.data);
-            if (!response.ok) throw new Error(`Failed to fetch image ${image.name}`);
-            const blob = await response.blob();
-            zip.file(`img/${image.name}`, blob);
-          } catch (error) {
-            console.error(`Error fetching image ${image.name}:`, error);
-          }
-        }
-      }
-
-      // Генерируем и скачиваем zip
-      const content = await zip.generateAsync({ type: 'blob' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(content);
-      link.download = 'template.zip';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    } catch (error) {
-      console.error('Error creating zip:', error);
-      alert('Произошла ошибка при создании архива. Пожалуйста, попробуйте еще раз.');
     }
-  });
+    
+    // Generate and download the zip file
+    zip.generateAsync({type: "blob"})
+      .then(function(content) {
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(content);
+        link.download = "template.zip";
+        link.click();
+      });
+  }); 
 }); 

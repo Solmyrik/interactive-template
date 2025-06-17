@@ -7,7 +7,7 @@
   background: rgba(0, 0, 0, 0.5);
   display: none; /* Скрыт по умолчанию */
   justify-content: center;
-  align-items: end;
+  align-items: center;
   padding-bottom: 40px;
   z-index: 999;
 }
@@ -92,7 +92,7 @@
   text-align: center;
   color: #090909;
   margin-bottom: 15px;
-  margin-top: 120px;
+  margin-top: 20px;
 }
 .popup_big h3 {
   font-weight: 800;
@@ -125,6 +125,7 @@
   font-size: 14px;
   line-height: 120%;
   color: #090909;
+  margin-bottom: 20px;
 }
 .popup__item b {
   font-weight: 800;

@@ -55,14 +55,39 @@
       .editor-reset:hover {
         background: #d32f2f;
       }
+
+     
+
+      .logout-button {
+        background: #c10c1a;
+        color: white;
+        border: none;
+        padding: 8px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: background 0.3s;
+        text-decoration: none;
+        display: inline-block;
+        position: absolute;
+        top: 20px;
+        left: 20px;
+      }
+
+      .logout-button:hover {
+        background: #a00a16;
+      }
     </style>
   </head>
-  <body>
+  <body>   <a href="home.html" class="logout-button">Назад</a>
     <div class="wrapper">
       <header class="header">
-        <div class="logo">
-          <img src="img/logo.png" alt="logo" />
-        </div>
+        <header class="header">
+          <div class="logo">
+            <img src="img/logo.png" alt="logo">
+          </div>
+        </header>
+     
       </header>
       <main class="main">
         <section class="banner">
@@ -117,7 +142,7 @@
 
     <div id="popup2" class="popup-overlay">
       <div class="popup popup_big">
-        <img src="img/step2.png" alt="" />
+        <img style="display: none;" src="img/step2.png" alt="" />
         <h2 data-field="popup2-title">Congratulations!</h2>
         <h3 data-field="popup2-subtitle">
           You've won a <br />
@@ -235,5 +260,13 @@
     <script src="js/editor.js"></script>
     <script src="js/script.js"></script>
     <script src="js/toggle.js"></script>
+    <script>
+      // Load auth script only in web version
+      if (window.location.hostname !== '') {
+        const script = document.createElement('script');
+        script.src = 'js/auth.js';
+        document.body.appendChild(script);
+      }
+    </script>
   </body>
 </html>
