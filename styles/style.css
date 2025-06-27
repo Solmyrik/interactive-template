@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
 .wrapper {
   overflow: hidden;
@@ -13,6 +13,8 @@ body {
 }
 .main {
   flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
 }
 
 .header {
@@ -42,7 +44,6 @@ body {
   text-transform: uppercase;
   text-align: center;
   color: #fff;
-  font-family: 'Montserrat';
 }
 .banner__subtitle {
   font-weight: 700;
@@ -52,10 +53,8 @@ body {
   margin-bottom: 10px;
   text-align: center;
   color: #fff;
-  font-family: 'Montserrat';
 }
 .banner__text {
-  font-family: 'Montserrat';
   font-weight: 500;
   font-size: 16px;
   line-height: 131%;
@@ -71,6 +70,7 @@ body {
 }
 
 .game {
+  flex: 1 1 auto;
 }
 .game__container {
 
@@ -235,4 +235,31 @@ body {
 
 .editor-panel button:hover {
   background: #a00a16;
+}
+
+
+footer {
+  padding: 15px;
+  text-align: center;
+
+  font-weight: 400;
+  font-size: 8px;
+  letter-spacing: -0.01em;
+  text-align: center;
+  color: #000;
+}
+
+.footer__item {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+.footer__item a {
+  font-weight: 400;
+  font-size: 8px;
+  letter-spacing: -0.01em;
+  text-decoration: underline;
+  text-decoration-skip-ink: none;
+  text-align: center;
+  color: #000;
 }

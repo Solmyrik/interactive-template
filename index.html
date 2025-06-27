@@ -6,7 +6,65 @@
     <title>interactive-template</title>
     <link rel="stylesheet" href="styles/null.css" />
     <link rel="stylesheet" href="styles/style.css" />
-    <link rel="stylesheet" href="styles/popup.css" />
+    <link rel="stylesheet" href="styles/popup.css" /> 
+    
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+      const urlParams = new Proxy(new URLSearchParams(window.location.search), {
+        get: (searchParams, prop) => searchParams.get(prop),
+      });
+
+      (function () {
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = `https://www.googletagmanager.com/gtag/js?id=${urlParams.google_tag_id}`;
+        document.head.appendChild(script);
+      })();
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+
+      gtag('config', urlParams.google_tag_id);
+
+      gtag('event', 'conversion', {
+        send_to: `${urlParams.google_tag_id}/xxxxxxxxxxxxxxxxxxxx`,
+        transaction_id: '',
+      });
+
+      $(document).ready(function () {
+        $('.final-btn').on('click', function (event) {
+          var xlink = '/click.php?lp=1&uclick=ojvcbg6o';
+
+          $('.spinner').css('display', 'block');
+
+          const element = document.querySelector(
+            'script[src^="https://www.googleadservices.com/pagead/conversion/"]',
+          );
+          const flc = element ? element.getAttribute('src') : null;
+
+          fetch('https://newtestdom.site/server-pixel/google-ads/save', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              gclid: urlParams.gclid,
+              google_conversion_link: flc,
+            }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              window.location.replace(xlink);
+            })
+            .catch((error) => {
+              window.location.replace(xlink);
+            });
+        });
+      });
+    </script>
     <style>
       .editor-toggle {
         position: fixed;
@@ -129,6 +187,13 @@
             </div>
           </div>
         </section>
+        <div class="footer">
+          <div class="footer__item">
+            <a href="policy.html" target="_blank">Privacy Policy</a>
+            <a href="terms.html" target="_blank">Terms &amp; Conditions</a>
+          </div>
+          <p class="footer__copy">©&nbsp;2025</p>
+        </div>
       </main>
     </div>
 
@@ -148,7 +213,7 @@
           You've won a <br />
           <b>Free Pringles Snack Pack!</b>
         </h3>
-        <h4>Here's what to do next:</h4>
+        <h4 data-field="popup2-next-title">Here's what to do next:</h4>
         <div class="popup__item" data-field="popup2-instructions">
           1. Click <b>Next</b> and enter your contact information. <br />
           2. You'll receive a confirmation email with delivery details.<br />
@@ -160,7 +225,7 @@
     </div>
 
     <button class="editor-toggle">Скрыть панель</button>
-    <div class="editor-panel">
+    <div style="font-family: 'Inter', sans-serif;" class="editor-panel">
       <h3>Редактирование шаблона</h3>
       <div>
         <label for="banner-title">Заголовок баннера:</label>
@@ -168,7 +233,7 @@
           type="text"
           id="banner-title"
           value="Congratulations, You're participating in the Pringles Stack & Win Giveaway!"
-        />
+        /> 
       </div>
       <div>
         <label for="banner-text">Текст баннера:</label>

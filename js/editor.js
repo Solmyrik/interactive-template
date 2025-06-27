@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
     game: createSection('Настройки игры'),
     popup1: createSection('Настройки первого попапа'),
     popup2: createSection('Настройки второго попапа'),
-    images: createSection('Настройки изображений'),
+    images: createSection('Настройки изображений (использовать только png)'),
     colors: createSection('Настройки цветов')
   };
 
@@ -52,24 +52,639 @@ document.addEventListener('DOMContentLoaded', function () {
     const labelElement = document.createElement('label');
     labelElement.textContent = label;
     
-    const input = document.createElement('input');
-    input.type = type;
+    let input;
+    // Для полей времени, размеров и цветов используем input, для остальных textarea
+    if (
+      fieldName === 'game-time' ||
+      fieldName === 'logo-size' ||
+      fieldName === 'game-item-size' ||
+      type === 'color'
+    ) {
+      input = document.createElement('input');
+      input.type = type;
+      // Стилизация для размеров
+      if (fieldName === 'logo-size' || fieldName === 'game-item-size') {
+        input.style.width = '100%';
+        input.style.padding = '8px 12px';
+        input.style.border = '1px solid #ccc';
+        input.style.borderRadius = '4px';
+        input.style.background = '#fff';
+        input.style.fontSize = '15px';
+        input.style.marginTop = '6px';
+        input.style.marginBottom = '6px';
+        input.style.boxSizing = 'border-box';
+      }
+    } else {
+      input = document.createElement('textarea');
+      input.rows = 2;
+    }
     input.className = 'editor-input';
     input.id = fieldName;
     
     // Получаем текущее значение из элемента с соответствующим data-field
     const targetElement = document.querySelector(`[data-field="${fieldName}"]`);
     if (targetElement) {
-      input.value = targetElement.textContent.trim();
+      input.value = targetElement.textContent.trim().replace(/<br\s*\/?>/gi, '\n');
     }
     
     input.addEventListener('input', (e) => {
       if (targetElement) {
-        targetElement.textContent = e.target.value;
+        if (
+          input.tagName === 'TEXTAREA' &&
+          fieldName !== 'logo-size' &&
+          fieldName !== 'game-item-size' &&
+          fieldName !== 'banner-bg-color' &&
+          fieldName !== 'background-color'
+        ) {
+          targetElement.innerHTML = e.target.value.replace(/\n/g, '<br>');
+        } else {
+          targetElement.textContent = e.target.value;
+        }
       }
       updateContent();
     });
     
+    // Для Заголовок баннера добавляем особое оформление
+    if (fieldName === 'banner-title') {
+      // Контейнер для всех настроек заголовка
+      const settingsDiv = document.createElement('div');
+      settingsDiv.style.background = '#f8f8fa';
+      settingsDiv.style.padding = '16px';
+      settingsDiv.style.borderRadius = '8px';
+      settingsDiv.style.marginBottom = '16px';
+      // Заголовок секции
+      const sectionTitle = document.createElement('div');
+      sectionTitle.textContent = 'Настройки заголовка баннера';
+      sectionTitle.style.fontWeight = 'bold';
+      sectionTitle.style.marginBottom = '8px';
+      settingsDiv.appendChild(sectionTitle);
+      // Текстовое поле
+      settingsDiv.appendChild(input);
+      // Контейнер для цвет+размер в ряд
+      const row = document.createElement('div');
+      row.style.display = 'flex';
+      row.style.gap = '12px';
+      row.style.marginTop = '8px';
+      // Цвет
+      const colorInput = document.createElement('input');
+      colorInput.type = 'color';
+      colorInput.title = 'Цвет текста';
+      colorInput.value = targetElement && targetElement.style.color ? rgb2hex(getComputedStyle(targetElement).color) : '#222222';
+      colorInput.style.flex = '0 0 20px';
+      colorInput.style.width = '20px';
+      colorInput.style.height = '20px';
+      colorInput.style.border = 'none';
+      colorInput.style.borderRadius = '50%';
+      colorInput.style.overflow = 'hidden';
+      colorInput.style.padding = '0';
+      colorInput.style.background = 'none';
+      // Размер
+      const sizeInput = document.createElement('input');
+      sizeInput.type = 'number';
+      sizeInput.min = 10;
+      sizeInput.max = 72;
+      sizeInput.title = 'Размер текста (px)';
+      sizeInput.style.width = '70px';
+      sizeInput.style.padding = '4px 8px';
+      sizeInput.style.border = '1px solid #ccc';
+      sizeInput.style.borderRadius = '4px';
+      sizeInput.style.fontSize = '14px';
+      sizeInput.style.background = '#fff';
+      sizeInput.style.boxSizing = 'border-box';
+      sizeInput.value = targetElement ? parseInt(getComputedStyle(targetElement).fontSize) : 32;
+      // Синхронизация
+      colorInput.addEventListener('input', (e) => {
+        if (targetElement) targetElement.style.color = e.target.value;
+        updateContent();
+      });
+      sizeInput.addEventListener('input', (e) => {
+        if (targetElement) targetElement.style.fontSize = e.target.value + 'px';
+        updateContent();
+      });
+      row.appendChild(colorInput);
+      row.appendChild(sizeInput);
+      settingsDiv.appendChild(row);
+      wrapper.appendChild(settingsDiv);
+      return wrapper;
+    }
+    // Для Текст баннера добавляем особое оформление
+    if (fieldName === 'banner-text') {
+      // Контейнер для всех настроек текста баннера
+      const settingsDiv = document.createElement('div');
+      settingsDiv.style.background = '#f8f8fa';
+      settingsDiv.style.padding = '16px';
+      settingsDiv.style.borderRadius = '8px';
+      settingsDiv.style.marginBottom = '16px';
+      // Заголовок секции
+      const sectionTitle = document.createElement('div');
+      sectionTitle.textContent = 'Настройки текста баннера';
+      sectionTitle.style.fontWeight = 'bold';
+      sectionTitle.style.marginBottom = '8px';
+      settingsDiv.appendChild(sectionTitle);
+      // Текстовое поле
+      settingsDiv.appendChild(input);
+      // Контейнер для цвет+размер в ряд
+      const row = document.createElement('div');
+      row.style.display = 'flex';
+      row.style.gap = '12px';
+      row.style.marginTop = '8px';
+      // Цвет
+      const colorInput = document.createElement('input');
+      colorInput.type = 'color';
+      colorInput.title = 'Цвет текста';
+      colorInput.value = targetElement && targetElement.style.color ? rgb2hex(getComputedStyle(targetElement).color) : '#222222';
+      colorInput.style.flex = '0 0 20px';
+      colorInput.style.width = '20px';
+      colorInput.style.height = '20px';
+      colorInput.style.border = 'none';
+      colorInput.style.borderRadius = '50%';
+      colorInput.style.overflow = 'hidden';
+      colorInput.style.padding = '0';
+      colorInput.style.background = 'none';
+      // Размер
+      const sizeInput = document.createElement('input');
+      sizeInput.type = 'number';
+      sizeInput.min = 10;
+      sizeInput.max = 72;
+      sizeInput.title = 'Размер текста (px)';
+      sizeInput.style.width = '70px';
+      sizeInput.style.padding = '4px 8px';
+      sizeInput.style.border = '1px solid #ccc';
+      sizeInput.style.borderRadius = '4px';
+      sizeInput.style.fontSize = '14px';
+      sizeInput.style.background = '#fff';
+      sizeInput.style.boxSizing = 'border-box';
+      sizeInput.value = targetElement ? parseInt(getComputedStyle(targetElement).fontSize) : 16;
+      // Синхронизация
+      colorInput.addEventListener('input', (e) => {
+        if (targetElement) targetElement.style.color = e.target.value;
+        updateContent();
+      });
+      sizeInput.addEventListener('input', (e) => {
+        if (targetElement) targetElement.style.fontSize = e.target.value + 'px';
+        updateContent();
+      });
+      row.appendChild(colorInput);
+      row.appendChild(sizeInput);
+      settingsDiv.appendChild(row);
+      wrapper.appendChild(settingsDiv);
+      return wrapper;
+    }
+    // Для Заголовок игры добавляем особое оформление
+    if (fieldName === 'game-title') {
+      // Контейнер для всех настроек заголовка игры
+      const settingsDiv = document.createElement('div');
+      settingsDiv.style.background = '#f8f8fa';
+      settingsDiv.style.padding = '16px';
+      settingsDiv.style.borderRadius = '8px';
+      settingsDiv.style.marginBottom = '16px';
+      // Заголовок секции
+      const sectionTitle = document.createElement('div');
+      sectionTitle.textContent = 'Настройки заголовка игры';
+      sectionTitle.style.fontWeight = 'bold';
+      sectionTitle.style.marginBottom = '8px';
+      settingsDiv.appendChild(sectionTitle);
+      // Текстовое поле
+      settingsDiv.appendChild(input);
+      // Контейнер для цвет+размер в ряд
+      const row = document.createElement('div');
+      row.style.display = 'flex';
+      row.style.gap = '12px';
+      row.style.marginTop = '8px';
+      // Цвет
+      const colorInput = document.createElement('input');
+      colorInput.type = 'color';
+      colorInput.title = 'Цвет текста';
+      colorInput.value = targetElement && targetElement.style.color ? rgb2hex(getComputedStyle(targetElement).color) : '#222222';
+      colorInput.style.flex = '0 0 20px';
+      colorInput.style.width = '20px';
+      colorInput.style.height = '20px';
+      colorInput.style.border = 'none';
+      colorInput.style.borderRadius = '50%';
+      colorInput.style.overflow = 'hidden';
+      colorInput.style.padding = '0';
+      colorInput.style.background = 'none';
+      // Размер
+      const sizeInput = document.createElement('input');
+      sizeInput.type = 'number';
+      sizeInput.min = 10;
+      sizeInput.max = 72;
+      sizeInput.title = 'Размер текста (px)';
+      sizeInput.style.width = '70px';
+      sizeInput.style.padding = '4px 8px';
+      sizeInput.style.border = '1px solid #ccc';
+      sizeInput.style.borderRadius = '4px';
+      sizeInput.style.fontSize = '14px';
+      sizeInput.style.background = '#fff';
+      sizeInput.style.boxSizing = 'border-box';
+      sizeInput.value = targetElement ? parseInt(getComputedStyle(targetElement).fontSize) : 24;
+      // Синхронизация
+      colorInput.addEventListener('input', (e) => {
+        if (targetElement) targetElement.style.color = e.target.value;
+        updateContent();
+      });
+      sizeInput.addEventListener('input', (e) => {
+        if (targetElement) targetElement.style.fontSize = e.target.value + 'px';
+        updateContent();
+      });
+      row.appendChild(colorInput);
+      row.appendChild(sizeInput);
+      settingsDiv.appendChild(row);
+      wrapper.appendChild(settingsDiv);
+      return wrapper;
+    }
+    // Для Заголовок первого попапа добавляем особое оформление
+    if (fieldName === 'popup1-title') {
+      const settingsDiv = document.createElement('div');
+      settingsDiv.style.background = '#f8f8fa';
+      settingsDiv.style.padding = '16px';
+      settingsDiv.style.borderRadius = '8px';
+      settingsDiv.style.marginBottom = '16px';
+      const sectionTitle = document.createElement('div');
+      sectionTitle.textContent = 'Настройки заголовка первого попапа';
+      sectionTitle.style.fontWeight = 'bold';
+      sectionTitle.style.marginBottom = '8px';
+      settingsDiv.appendChild(sectionTitle);
+      settingsDiv.appendChild(input);
+      const row = document.createElement('div');
+      row.style.display = 'flex';
+      row.style.gap = '12px';
+      row.style.marginTop = '8px';
+      const colorInput = document.createElement('input');
+      colorInput.type = 'color';
+      colorInput.title = 'Цвет текста';
+      colorInput.value = targetElement && targetElement.style.color ? rgb2hex(getComputedStyle(targetElement).color) : '#222222';
+      colorInput.style.flex = '0 0 20px';
+      colorInput.style.width = '20px';
+      colorInput.style.height = '20px';
+      colorInput.style.border = 'none';
+      colorInput.style.borderRadius = '50%';
+      colorInput.style.overflow = 'hidden';
+      colorInput.style.padding = '0';
+      colorInput.style.background = 'none';
+      const sizeInput = document.createElement('input');
+      sizeInput.type = 'number';
+      sizeInput.min = 10;
+      sizeInput.max = 72;
+      sizeInput.title = 'Размер текста (px)';
+      sizeInput.style.width = '70px';
+      sizeInput.style.padding = '4px 8px';
+      sizeInput.style.border = '1px solid #ccc';
+      sizeInput.style.borderRadius = '4px';
+      sizeInput.style.fontSize = '14px';
+      sizeInput.style.background = '#fff';
+      sizeInput.style.boxSizing = 'border-box';
+      sizeInput.value = targetElement ? parseInt(getComputedStyle(targetElement).fontSize) : 24;
+      colorInput.addEventListener('input', (e) => {
+        if (targetElement) targetElement.style.color = e.target.value;
+        updateContent();
+      });
+      sizeInput.addEventListener('input', (e) => {
+        if (targetElement) targetElement.style.fontSize = e.target.value + 'px';
+        updateContent();
+      });
+      row.appendChild(colorInput);
+      row.appendChild(sizeInput);
+      settingsDiv.appendChild(row);
+      wrapper.appendChild(settingsDiv);
+      return wrapper;
+    }
+    // Для Текст первого попапа добавляем особое оформление
+    if (fieldName === 'popup1-text') {
+      const settingsDiv = document.createElement('div');
+      settingsDiv.style.background = '#f8f8fa';
+      settingsDiv.style.padding = '16px';
+      settingsDiv.style.borderRadius = '8px';
+      settingsDiv.style.marginBottom = '16px';
+      const sectionTitle = document.createElement('div');
+      sectionTitle.textContent = 'Настройки текста первого попапа';
+      sectionTitle.style.fontWeight = 'bold';
+      sectionTitle.style.marginBottom = '8px';
+      settingsDiv.appendChild(sectionTitle);
+      settingsDiv.appendChild(input);
+      const row = document.createElement('div');
+      row.style.display = 'flex';
+      row.style.gap = '12px';
+      row.style.marginTop = '8px';
+      const colorInput = document.createElement('input');
+      colorInput.type = 'color';
+      colorInput.title = 'Цвет текста';
+      colorInput.value = targetElement && targetElement.style.color ? rgb2hex(getComputedStyle(targetElement).color) : '#222222';
+      colorInput.style.flex = '0 0 20px';
+      colorInput.style.width = '20px';
+      colorInput.style.height = '20px';
+      colorInput.style.border = 'none';
+      colorInput.style.borderRadius = '50%';
+      colorInput.style.overflow = 'hidden';
+      colorInput.style.padding = '0';
+      colorInput.style.background = 'none';
+      const sizeInput = document.createElement('input');
+      sizeInput.type = 'number';
+      sizeInput.min = 10;
+      sizeInput.max = 72;
+      sizeInput.title = 'Размер текста (px)';
+      sizeInput.style.width = '70px';
+      sizeInput.style.padding = '4px 8px';
+      sizeInput.style.border = '1px solid #ccc';
+      sizeInput.style.borderRadius = '4px';
+      sizeInput.style.fontSize = '14px';
+      sizeInput.style.background = '#fff';
+      sizeInput.style.boxSizing = 'border-box';
+      sizeInput.value = targetElement ? parseInt(getComputedStyle(targetElement).fontSize) : 16;
+      colorInput.addEventListener('input', (e) => {
+        if (targetElement) targetElement.style.color = e.target.value;
+        updateContent();
+      });
+      sizeInput.addEventListener('input', (e) => {
+        if (targetElement) targetElement.style.fontSize = e.target.value + 'px';
+        updateContent();
+      });
+      row.appendChild(colorInput);
+      row.appendChild(sizeInput);
+      settingsDiv.appendChild(row);
+      wrapper.appendChild(settingsDiv);
+      return wrapper;
+    }
+    // Для Заголовок второго попапа добавляем особое оформление
+    if (fieldName === 'popup2-title') {
+      const settingsDiv = document.createElement('div');
+      settingsDiv.style.background = '#f8f8fa';
+      settingsDiv.style.padding = '16px';
+      settingsDiv.style.borderRadius = '8px';
+      settingsDiv.style.marginBottom = '16px';
+      const sectionTitle = document.createElement('div');
+      sectionTitle.textContent = 'Настройки заголовка второго попапа';
+      sectionTitle.style.fontWeight = 'bold';
+      sectionTitle.style.marginBottom = '8px';
+      settingsDiv.appendChild(sectionTitle);
+      settingsDiv.appendChild(input);
+      const row = document.createElement('div');
+      row.style.display = 'flex';
+      row.style.gap = '12px';
+      row.style.marginTop = '8px';
+      const colorInput = document.createElement('input');
+      colorInput.type = 'color';
+      colorInput.title = 'Цвет текста';
+      colorInput.value = targetElement && targetElement.style.color ? rgb2hex(getComputedStyle(targetElement).color) : '#222222';
+      colorInput.style.flex = '0 0 20px';
+      colorInput.style.width = '20px';
+      colorInput.style.height = '20px';
+      colorInput.style.border = 'none';
+      colorInput.style.borderRadius = '50%';
+      colorInput.style.overflow = 'hidden';
+      colorInput.style.padding = '0';
+      colorInput.style.background = 'none';
+      const sizeInput = document.createElement('input');
+      sizeInput.type = 'number';
+      sizeInput.min = 10;
+      sizeInput.max = 72;
+      sizeInput.title = 'Размер текста (px)';
+      sizeInput.style.width = '70px';
+      sizeInput.style.padding = '4px 8px';
+      sizeInput.style.border = '1px solid #ccc';
+      sizeInput.style.borderRadius = '4px';
+      sizeInput.style.fontSize = '14px';
+      sizeInput.style.background = '#fff';
+      sizeInput.style.boxSizing = 'border-box';
+      sizeInput.value = targetElement ? parseInt(getComputedStyle(targetElement).fontSize) : 24;
+      colorInput.addEventListener('input', (e) => {
+        if (targetElement) targetElement.style.color = e.target.value;
+        updateContent();
+      });
+      sizeInput.addEventListener('input', (e) => {
+        if (targetElement) targetElement.style.fontSize = e.target.value + 'px';
+        updateContent();
+      });
+      row.appendChild(colorInput);
+      row.appendChild(sizeInput);
+      settingsDiv.appendChild(row);
+      wrapper.appendChild(settingsDiv);
+      return wrapper;
+    }
+    // Для Подзаголовок второго попапа добавляем особое оформление
+    if (fieldName === 'popup2-subtitle') {
+      const settingsDiv = document.createElement('div');
+      settingsDiv.style.background = '#f8f8fa';
+      settingsDiv.style.padding = '16px';
+      settingsDiv.style.borderRadius = '8px';
+      settingsDiv.style.marginBottom = '16px';
+      const sectionTitle = document.createElement('div');
+      sectionTitle.textContent = 'Настройки подзаголовка второго попапа';
+      sectionTitle.style.fontWeight = 'bold';
+      sectionTitle.style.marginBottom = '8px';
+      settingsDiv.appendChild(sectionTitle);
+      settingsDiv.appendChild(input);
+      const row = document.createElement('div');
+      row.style.display = 'flex';
+      row.style.gap = '12px';
+      row.style.marginTop = '8px';
+      const colorInput = document.createElement('input');
+      colorInput.type = 'color';
+      colorInput.title = 'Цвет текста';
+      colorInput.value = targetElement && targetElement.style.color ? rgb2hex(getComputedStyle(targetElement).color) : '#222222';
+      colorInput.style.flex = '0 0 20px';
+      colorInput.style.width = '20px';
+      colorInput.style.height = '20px';
+      colorInput.style.border = 'none';
+      colorInput.style.borderRadius = '50%';
+      colorInput.style.overflow = 'hidden';
+      colorInput.style.padding = '0';
+      colorInput.style.background = 'none';
+      const sizeInput = document.createElement('input');
+      sizeInput.type = 'number';
+      sizeInput.min = 10;
+      sizeInput.max = 72;
+      sizeInput.title = 'Размер текста (px)';
+      sizeInput.style.width = '70px';
+      sizeInput.style.padding = '4px 8px';
+      sizeInput.style.border = '1px solid #ccc';
+      sizeInput.style.borderRadius = '4px';
+      sizeInput.style.fontSize = '14px';
+      sizeInput.style.background = '#fff';
+      sizeInput.style.boxSizing = 'border-box';
+      sizeInput.value = targetElement ? parseInt(getComputedStyle(targetElement).fontSize) : 20;
+      colorInput.addEventListener('input', (e) => {
+        if (targetElement) targetElement.style.color = e.target.value;
+        updateContent();
+      });
+      sizeInput.addEventListener('input', (e) => {
+        if (targetElement) targetElement.style.fontSize = e.target.value + 'px';
+        updateContent();
+      });
+      row.appendChild(colorInput);
+      row.appendChild(sizeInput);
+      settingsDiv.appendChild(row);
+      wrapper.appendChild(settingsDiv);
+      return wrapper;
+    }
+    // Для Инструкции второго попапа добавляем особое оформление
+    if (fieldName === 'popup2-instructions') {
+      const settingsDiv = document.createElement('div');
+      settingsDiv.style.background = '#f8f8fa';
+      settingsDiv.style.padding = '16px';
+      settingsDiv.style.borderRadius = '8px';
+      settingsDiv.style.marginBottom = '16px';
+      const sectionTitle = document.createElement('div');
+      sectionTitle.textContent = 'Настройки инструкций второго попапа';
+      sectionTitle.style.fontWeight = 'bold';
+      sectionTitle.style.marginBottom = '8px';
+      settingsDiv.appendChild(sectionTitle);
+      settingsDiv.appendChild(input);
+      const row = document.createElement('div');
+      row.style.display = 'flex';
+      row.style.gap = '12px';
+      row.style.marginTop = '8px';
+      const colorInput = document.createElement('input');
+      colorInput.type = 'color';
+      colorInput.title = 'Цвет текста';
+      colorInput.value = targetElement && targetElement.style.color ? rgb2hex(getComputedStyle(targetElement).color) : '#222222';
+      colorInput.style.flex = '0 0 20px';
+      colorInput.style.width = '20px';
+      colorInput.style.height = '20px';
+      colorInput.style.border = 'none';
+      colorInput.style.borderRadius = '50%';
+      colorInput.style.overflow = 'hidden';
+      colorInput.style.padding = '0';
+      colorInput.style.background = 'none';
+      const sizeInput = document.createElement('input');
+      sizeInput.type = 'number';
+      sizeInput.min = 10;
+      sizeInput.max = 72;
+      sizeInput.title = 'Размер текста (px)';
+      sizeInput.style.width = '70px';
+      sizeInput.style.padding = '4px 8px';
+      sizeInput.style.border = '1px solid #ccc';
+      sizeInput.style.borderRadius = '4px';
+      sizeInput.style.fontSize = '14px';
+      sizeInput.style.background = '#fff';
+      sizeInput.style.boxSizing = 'border-box';
+      sizeInput.value = targetElement ? parseInt(getComputedStyle(targetElement).fontSize) : 16;
+      colorInput.addEventListener('input', (e) => {
+        if (targetElement) targetElement.style.color = e.target.value;
+        updateContent();
+      });
+      sizeInput.addEventListener('input', (e) => {
+        if (targetElement) targetElement.style.fontSize = e.target.value + 'px';
+        updateContent();
+      });
+      row.appendChild(colorInput);
+      row.appendChild(sizeInput);
+      settingsDiv.appendChild(row);
+      wrapper.appendChild(settingsDiv);
+      return wrapper;
+    }
+    // Для Текст финальной кнопки добавляем особое оформление
+    if (fieldName === 'final-btn-text') {
+      const settingsDiv = document.createElement('div');
+      settingsDiv.style.background = '#f8f8fa';
+      settingsDiv.style.padding = '16px';
+      settingsDiv.style.borderRadius = '8px';
+      settingsDiv.style.marginBottom = '16px';
+      const sectionTitle = document.createElement('div');
+      sectionTitle.textContent = 'Настройки текста финальной кнопки';
+      sectionTitle.style.fontWeight = 'bold';
+      sectionTitle.style.marginBottom = '8px';
+      settingsDiv.appendChild(sectionTitle);
+      settingsDiv.appendChild(input);
+      const row = document.createElement('div');
+      row.style.display = 'flex';
+      row.style.gap = '12px';
+      row.style.marginTop = '8px';
+      const colorInput = document.createElement('input');
+      colorInput.type = 'color';
+      colorInput.title = 'Цвет текста';
+      colorInput.value = targetElement && targetElement.style.color ? rgb2hex(getComputedStyle(targetElement).color) : '#222222';
+      colorInput.style.flex = '0 0 20px';
+      colorInput.style.width = '20px';
+      colorInput.style.height = '20px';
+      colorInput.style.border = 'none';
+      colorInput.style.borderRadius = '50%';
+      colorInput.style.overflow = 'hidden';
+      colorInput.style.padding = '0';
+      colorInput.style.background = 'none';
+      const sizeInput = document.createElement('input');
+      sizeInput.type = 'number';
+      sizeInput.min = 10;
+      sizeInput.max = 72;
+      sizeInput.title = 'Размер текста (px)';
+      sizeInput.style.width = '70px';
+      sizeInput.style.padding = '4px 8px';
+      sizeInput.style.border = '1px solid #ccc';
+      sizeInput.style.borderRadius = '4px';
+      sizeInput.style.fontSize = '14px';
+      sizeInput.style.background = '#fff';
+      sizeInput.style.boxSizing = 'border-box';
+      sizeInput.value = targetElement ? parseInt(getComputedStyle(targetElement).fontSize) : 16;
+      colorInput.addEventListener('input', (e) => {
+        if (targetElement) targetElement.style.color = e.target.value;
+        updateContent();
+      });
+      sizeInput.addEventListener('input', (e) => {
+        if (targetElement) targetElement.style.fontSize = e.target.value + 'px';
+        updateContent();
+      });
+      row.appendChild(colorInput);
+      row.appendChild(sizeInput);
+      settingsDiv.appendChild(row);
+      wrapper.appendChild(settingsDiv);
+      return wrapper;
+    }
+    // Для "Here's what to do next:" добавляем особое оформление
+    if (fieldName === 'popup2-next-title') {
+      const settingsDiv = document.createElement('div');
+      settingsDiv.style.background = '#f8f8fa';
+      settingsDiv.style.padding = '16px';
+      settingsDiv.style.borderRadius = '8px';
+      settingsDiv.style.marginBottom = '16px';
+      const sectionTitle = document.createElement('div');
+      sectionTitle.textContent = 'Настройки заголовка "Here\'s what to do next:"';
+      sectionTitle.style.fontWeight = 'bold';
+      sectionTitle.style.marginBottom = '8px';
+      settingsDiv.appendChild(sectionTitle);
+      settingsDiv.appendChild(input);
+      const row = document.createElement('div');
+      row.style.display = 'flex';
+      row.style.gap = '12px';
+      row.style.marginTop = '8px';
+      const colorInput = document.createElement('input');
+      colorInput.type = 'color';
+      colorInput.title = 'Цвет текста';
+      colorInput.value = targetElement && targetElement.style.color ? rgb2hex(getComputedStyle(targetElement).color) : '#222222';
+      colorInput.style.flex = '0 0 20px';
+      colorInput.style.width = '20px';
+      colorInput.style.height = '20px';
+      colorInput.style.border = 'none';
+      colorInput.style.borderRadius = '50%';
+      colorInput.style.overflow = 'hidden';
+      colorInput.style.padding = '0';
+      colorInput.style.background = 'none';
+      const sizeInput = document.createElement('input');
+      sizeInput.type = 'number';
+      sizeInput.min = 10;
+      sizeInput.max = 72;
+      sizeInput.title = 'Размер текста (px)';
+      sizeInput.style.width = '70px';
+      sizeInput.style.padding = '4px 8px';
+      sizeInput.style.border = '1px solid #ccc';
+      sizeInput.style.borderRadius = '4px';
+      sizeInput.style.fontSize = '14px';
+      sizeInput.style.background = '#fff';
+      sizeInput.style.boxSizing = 'border-box';
+      sizeInput.value = targetElement ? parseInt(getComputedStyle(targetElement).fontSize) : 18;
+      colorInput.addEventListener('input', (e) => {
+        if (targetElement) targetElement.style.color = e.target.value;
+        updateContent();
+      });
+      sizeInput.addEventListener('input', (e) => {
+        if (targetElement) targetElement.style.fontSize = e.target.value + 'px';
+        updateContent();
+      });
+      row.appendChild(colorInput);
+      row.appendChild(sizeInput);
+      settingsDiv.appendChild(row);
+      wrapper.appendChild(settingsDiv);
+      return wrapper;
+    }
     wrapper.appendChild(labelElement);
     wrapper.appendChild(input);
     return wrapper;
@@ -148,6 +763,133 @@ document.addEventListener('DOMContentLoaded', function () {
     return wrapper;
   }
 
+  // Функция создания поля выбора шрифта
+  function createFontFamilySelector(label, fieldName) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'editor-field';
+
+    const labelElement = document.createElement('label');
+    labelElement.textContent = label;
+
+    const select = document.createElement('select');
+    select.className = 'editor-input';
+    select.id = fieldName;
+    const fonts = [
+      { name: 'Montserrat', value: 'Montserrat, sans-serif' },
+      { name: 'Roboto', value: 'Roboto, sans-serif' },
+      { name: 'Inter', value: 'Inter, sans-serif' }
+    ];
+    fonts.forEach(font => {
+      const option = document.createElement('option');
+      option.value = font.value;
+      option.textContent = font.name;
+      select.appendChild(option);
+    });
+    // По умолчанию выбран Montserrat
+    select.value = getComputedStyle(document.body).fontFamily || 'Montserrat, sans-serif';
+
+    // Стилизация селектора
+    select.style.width = '100%';
+    select.style.padding = '8px 12px';
+    select.style.border = '1px solid #ccc';
+    select.style.borderRadius = '4px';
+    select.style.background = '#fff';
+    select.style.fontSize = '15px';
+    select.style.marginTop = '6px';
+    select.style.marginBottom = '6px';
+    select.style.cursor = 'pointer';
+    select.style.boxSizing = 'border-box';
+
+    select.addEventListener('change', (e) => {
+      document.body.style.fontFamily = e.target.value;
+      updateContent();
+    });
+
+    wrapper.appendChild(labelElement);
+    wrapper.appendChild(select);
+    return wrapper;
+  }
+
+  // Функция создания чекбокса для кода гугла
+  function createGoogleCodeCheckbox() {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'editor-field';
+    wrapper.style.marginBottom = '16px';
+    wrapper.style.display = 'flex';
+    wrapper.style.alignItems = 'center';
+    
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.id = 'google-code-checkbox';
+    checkbox.style.marginRight = '8px';
+    
+    const label = document.createElement('label');
+    label.textContent = 'Код гугла';
+    label.style.fontWeight = '500';
+    label.style.cursor = 'pointer';
+    
+    // Проверяем, есть ли уже класс final-btn у кнопки
+    const finalBtn = document.querySelector('.final_btn');
+    if (finalBtn && finalBtn.classList.contains('final-btn')) {
+      checkbox.checked = true;
+    }
+    
+    checkbox.addEventListener('change', (e) => {
+      if (finalBtn) {
+        if (e.target.checked) {
+          finalBtn.classList.add('final-btn');
+        } else {
+          finalBtn.classList.remove('final-btn');
+        }
+      }
+      updateContent();
+    });
+    
+    wrapper.appendChild(checkbox);
+    wrapper.appendChild(label);
+    return wrapper;
+  }
+
+  // Функция создания чекбокса для скрытия/показа footer
+  function createFooterCheckbox() {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'editor-field';
+    wrapper.style.marginBottom = '16px';
+    wrapper.style.display = 'flex';
+    wrapper.style.alignItems = 'center';
+    
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.id = 'footer-checkbox';
+    checkbox.style.marginRight = '8px';
+    
+    const label = document.createElement('label');
+    label.textContent = 'Скрыть политику';
+    label.style.fontWeight = '500';
+    label.style.cursor = 'pointer';
+    
+    // Проверяем, скрыт ли уже footer
+    const footer = document.querySelector('.footer');
+    if (footer && footer.style.display === 'none') {
+      checkbox.checked = true;
+    }
+    
+    checkbox.addEventListener('change', (e) => {
+      if (footer) {
+        if (e.target.checked) {
+          footer.style.display = 'none';
+        } else {
+          footer.style.display = '';
+        }
+      }
+      updateContent();
+    });
+    
+    wrapper.appendChild(checkbox);
+    wrapper.appendChild(label);
+    return wrapper;
+  }
+
   // Добавляем поля в соответствующие секции
   sections.banner.appendChild(createInputField('Заголовок баннера', 'banner-title'));
   sections.banner.appendChild(createInputField('Текст баннера', 'banner-text'));
@@ -159,20 +901,24 @@ document.addEventListener('DOMContentLoaded', function () {
 
   sections.popup2.appendChild(createInputField('Заголовок второго попапа', 'popup2-title'));
   sections.popup2.appendChild(createInputField('Подзаголовок второго попапа', 'popup2-subtitle'));
+  sections.popup2.appendChild(createInputField('Заголовок "Here\'s what to do next:"', 'popup2-next-title'));
   sections.popup2.appendChild(createInputField('Инструкции второго попапа', 'popup2-instructions'));
   sections.popup2.appendChild(createInputField('Текст финальной кнопки', 'final-btn-text'));
 
   sections.images.appendChild(createImageUploader('Логотип', 'logo-img'));
-  sections.images.appendChild(createImageUploader('Изображение банка (начальное)', 'step0-img'));
-  sections.images.appendChild(createImageUploader('Изображение банка (после первого клика)', 'step1-img'));
-  sections.images.appendChild(createImageUploader('Изображение банка (после второго клика)', 'step2-img'));
+  sections.images.appendChild(createImageUploader('Изображение коробки (начальное)', 'step0-img'));
+  sections.images.appendChild(createImageUploader('Изображение коробки (после первого клика)', 'step1-img'));
+  sections.images.appendChild(createImageUploader('Изображение коробки (после второго клика)', 'step2-img'));
 
   sections.colors.appendChild(createInputField('Цвет фона баннера', 'banner-bg-color', 'color'));
   sections.colors.appendChild(createInputField('Цвет фона страницы', 'background-color', 'color'));
+  sections.colors.appendChild(createFontFamilySelector('Семейство шрифта', 'font-family'));
+  sections.colors.appendChild(createGoogleCodeCheckbox());
+  sections.colors.appendChild(createFooterCheckbox());
 
   // Добавляем поля для размеров
   sections.images.appendChild(createInputField('Размер логотипа (px)', 'logo-size', 'number'));
-  sections.images.appendChild(createInputField('Размер банков (px)', 'game-item-size', 'number'));
+  sections.images.appendChild(createInputField('Размер коробок (px)', 'game-item-size', 'number'));
 
   // Добавляем секции в панель редактирования
   Object.values(sections).forEach(section => {
@@ -334,6 +1080,15 @@ document.addEventListener('DOMContentLoaded', function () {
           if (timePattern.test(input.value)) {
             element.textContent = input.value;
           }
+        } else if (
+          input.tagName === 'TEXTAREA' &&
+          fieldId !== 'logo-size' &&
+          fieldId !== 'game-item-size' &&
+          fieldId !== 'banner-bg-color' &&
+          fieldId !== 'background-color'
+        ) {
+          // Для textarea переносы строк заменяем на <br>
+          element.innerHTML = input.value.replace(/\n/g, '<br>');
         } else {
           element.textContent = input.value;
         }
@@ -363,6 +1118,16 @@ document.addEventListener('DOMContentLoaded', function () {
     // Обновляем цвета
     const bannerBgColor = document.getElementById('banner-bg-color').value;
     document.querySelector('.banner').style.backgroundColor = bannerBgColor;
+
+    // Добавляю применение цвета фона страницы
+    const pageBgColor = document.getElementById('background-color').value;
+    document.body.style.backgroundColor = pageBgColor;
+
+    // Обновляем шрифт
+    const fontFamilySelect = document.getElementById('font-family');
+    if (fontFamilySelect) {
+      document.body.style.fontFamily = fontFamilySelect.value;
+    }
 
     // Обновляем размеры
     const logoSize = document.getElementById('logo-size').value;
@@ -498,13 +1263,16 @@ document.addEventListener('DOMContentLoaded', function () {
     
     // Add the modified HTML file
     zip.file("index.html", htmlContent);
+
     
     // Add other necessary files
     const files = [
       'styles/null.css',
       'styles/style.css',
       'styles/popup.css',
-      'js/toggle.js'
+      'js/toggle.js',
+      'policy.html',
+      'terms.html'
     ];
     
     // Add each file to the zip
@@ -622,3 +1390,16 @@ gameItems.forEach((item) => {
       });
   }); 
 }); 
+
+// Вспомогательная функция для перевода rgb в hex
+function rgb2hex(rgb) {
+  if (!rgb) return '#222222';
+  const result = rgb.match(/\d+/g);
+  if (!result) return '#222222';
+  return (
+    '#' +
+    ((1 << 24) + (parseInt(result[0]) << 16) + (parseInt(result[1]) << 8) + parseInt(result[2]))
+      .toString(16)
+      .slice(1)
+  );
+} 
