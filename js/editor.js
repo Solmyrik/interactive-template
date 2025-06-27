@@ -1,11 +1,11 @@
 document.addEventListener('DOMContentLoaded', function () {
   // Сохраняем базовый цвет баннера
   const baseBannerColor = document.querySelector('.banner').style.backgroundColor || '#ffffff';
-  
+
   // Очищаем панель редактирования от старых полей
   const editorPanel = document.querySelector('.editor-panel');
   editorPanel.innerHTML = '';
-  
+
   // Стилизуем панель редактирования
   editorPanel.style.padding = '20px';
   editorPanel.style.backgroundColor = '#f5f5f5';
@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function () {
     popup1: createSection('Настройки первого попапа'),
     popup2: createSection('Настройки второго попапа'),
     images: createSection('Настройки изображений (использовать только png)'),
-    colors: createSection('Настройки цветов')
+    colors: createSection('Настройки цветов'),
   };
 
   // Функция создания секции
@@ -48,10 +48,10 @@ document.addEventListener('DOMContentLoaded', function () {
   function createInputField(label, fieldName, type = 'text') {
     const wrapper = document.createElement('div');
     wrapper.className = 'editor-field';
-    
+
     const labelElement = document.createElement('label');
     labelElement.textContent = label;
-    
+
     let input;
     // Для полей времени, размеров и цветов используем input, для остальных textarea
     if (
@@ -80,13 +80,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     input.className = 'editor-input';
     input.id = fieldName;
-    
+
     // Получаем текущее значение из элемента с соответствующим data-field
     const targetElement = document.querySelector(`[data-field="${fieldName}"]`);
     if (targetElement) {
       input.value = targetElement.textContent.trim().replace(/<br\s*\/?>/gi, '\n');
     }
-    
+
     input.addEventListener('input', (e) => {
       if (targetElement) {
         if (
@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
       updateContent();
     });
-    
+
     // Для Заголовок баннера добавляем особое оформление
     if (fieldName === 'banner-title') {
       // Контейнер для всех настроек заголовка
@@ -129,7 +129,10 @@ document.addEventListener('DOMContentLoaded', function () {
       const colorInput = document.createElement('input');
       colorInput.type = 'color';
       colorInput.title = 'Цвет текста';
-      colorInput.value = targetElement && targetElement.style.color ? rgb2hex(getComputedStyle(targetElement).color) : '#222222';
+      colorInput.value =
+        targetElement && targetElement.style.color
+          ? rgb2hex(getComputedStyle(targetElement).color)
+          : '#222222';
       colorInput.style.flex = '0 0 20px';
       colorInput.style.width = '20px';
       colorInput.style.height = '20px';
@@ -192,7 +195,10 @@ document.addEventListener('DOMContentLoaded', function () {
       const colorInput = document.createElement('input');
       colorInput.type = 'color';
       colorInput.title = 'Цвет текста';
-      colorInput.value = targetElement && targetElement.style.color ? rgb2hex(getComputedStyle(targetElement).color) : '#222222';
+      colorInput.value =
+        targetElement && targetElement.style.color
+          ? rgb2hex(getComputedStyle(targetElement).color)
+          : '#222222';
       colorInput.style.flex = '0 0 20px';
       colorInput.style.width = '20px';
       colorInput.style.height = '20px';
@@ -255,7 +261,10 @@ document.addEventListener('DOMContentLoaded', function () {
       const colorInput = document.createElement('input');
       colorInput.type = 'color';
       colorInput.title = 'Цвет текста';
-      colorInput.value = targetElement && targetElement.style.color ? rgb2hex(getComputedStyle(targetElement).color) : '#222222';
+      colorInput.value =
+        targetElement && targetElement.style.color
+          ? rgb2hex(getComputedStyle(targetElement).color)
+          : '#222222';
       colorInput.style.flex = '0 0 20px';
       colorInput.style.width = '20px';
       colorInput.style.height = '20px';
@@ -313,7 +322,10 @@ document.addEventListener('DOMContentLoaded', function () {
       const colorInput = document.createElement('input');
       colorInput.type = 'color';
       colorInput.title = 'Цвет текста';
-      colorInput.value = targetElement && targetElement.style.color ? rgb2hex(getComputedStyle(targetElement).color) : '#222222';
+      colorInput.value =
+        targetElement && targetElement.style.color
+          ? rgb2hex(getComputedStyle(targetElement).color)
+          : '#222222';
       colorInput.style.flex = '0 0 20px';
       colorInput.style.width = '20px';
       colorInput.style.height = '20px';
@@ -369,7 +381,10 @@ document.addEventListener('DOMContentLoaded', function () {
       const colorInput = document.createElement('input');
       colorInput.type = 'color';
       colorInput.title = 'Цвет текста';
-      colorInput.value = targetElement && targetElement.style.color ? rgb2hex(getComputedStyle(targetElement).color) : '#222222';
+      colorInput.value =
+        targetElement && targetElement.style.color
+          ? rgb2hex(getComputedStyle(targetElement).color)
+          : '#222222';
       colorInput.style.flex = '0 0 20px';
       colorInput.style.width = '20px';
       colorInput.style.height = '20px';
@@ -425,7 +440,10 @@ document.addEventListener('DOMContentLoaded', function () {
       const colorInput = document.createElement('input');
       colorInput.type = 'color';
       colorInput.title = 'Цвет текста';
-      colorInput.value = targetElement && targetElement.style.color ? rgb2hex(getComputedStyle(targetElement).color) : '#222222';
+      colorInput.value =
+        targetElement && targetElement.style.color
+          ? rgb2hex(getComputedStyle(targetElement).color)
+          : '#222222';
       colorInput.style.flex = '0 0 20px';
       colorInput.style.width = '20px';
       colorInput.style.height = '20px';
@@ -481,7 +499,10 @@ document.addEventListener('DOMContentLoaded', function () {
       const colorInput = document.createElement('input');
       colorInput.type = 'color';
       colorInput.title = 'Цвет текста';
-      colorInput.value = targetElement && targetElement.style.color ? rgb2hex(getComputedStyle(targetElement).color) : '#222222';
+      colorInput.value =
+        targetElement && targetElement.style.color
+          ? rgb2hex(getComputedStyle(targetElement).color)
+          : '#222222';
       colorInput.style.flex = '0 0 20px';
       colorInput.style.width = '20px';
       colorInput.style.height = '20px';
@@ -537,7 +558,10 @@ document.addEventListener('DOMContentLoaded', function () {
       const colorInput = document.createElement('input');
       colorInput.type = 'color';
       colorInput.title = 'Цвет текста';
-      colorInput.value = targetElement && targetElement.style.color ? rgb2hex(getComputedStyle(targetElement).color) : '#222222';
+      colorInput.value =
+        targetElement && targetElement.style.color
+          ? rgb2hex(getComputedStyle(targetElement).color)
+          : '#222222';
       colorInput.style.flex = '0 0 20px';
       colorInput.style.width = '20px';
       colorInput.style.height = '20px';
@@ -593,7 +617,10 @@ document.addEventListener('DOMContentLoaded', function () {
       const colorInput = document.createElement('input');
       colorInput.type = 'color';
       colorInput.title = 'Цвет текста';
-      colorInput.value = targetElement && targetElement.style.color ? rgb2hex(getComputedStyle(targetElement).color) : '#222222';
+      colorInput.value =
+        targetElement && targetElement.style.color
+          ? rgb2hex(getComputedStyle(targetElement).color)
+          : '#222222';
       colorInput.style.flex = '0 0 20px';
       colorInput.style.width = '20px';
       colorInput.style.height = '20px';
@@ -649,7 +676,10 @@ document.addEventListener('DOMContentLoaded', function () {
       const colorInput = document.createElement('input');
       colorInput.type = 'color';
       colorInput.title = 'Цвет текста';
-      colorInput.value = targetElement && targetElement.style.color ? rgb2hex(getComputedStyle(targetElement).color) : '#222222';
+      colorInput.value =
+        targetElement && targetElement.style.color
+          ? rgb2hex(getComputedStyle(targetElement).color)
+          : '#222222';
       colorInput.style.flex = '0 0 20px';
       colorInput.style.width = '20px';
       colorInput.style.height = '20px';
@@ -694,16 +724,16 @@ document.addEventListener('DOMContentLoaded', function () {
   function createImageUploader(label, fieldName) {
     const wrapper = document.createElement('div');
     wrapper.className = 'editor-field';
-    
+
     const labelElement = document.createElement('label');
     labelElement.textContent = label;
-    
+
     const input = document.createElement('input');
     input.type = 'file';
     input.accept = 'image/*';
     input.className = 'editor-input';
     input.id = fieldName;
-    
+
     input.addEventListener('change', (e) => {
       const file = e.target.files[0];
       if (file) {
@@ -711,7 +741,7 @@ document.addEventListener('DOMContentLoaded', function () {
         reader.onload = (event) => {
           // Determine the correct image name based on fieldName
           let imageName;
-          switch(fieldName) {
+          switch (fieldName) {
             case 'logo-img':
               imageName = 'logo.png';
               break;
@@ -729,17 +759,17 @@ document.addEventListener('DOMContentLoaded', function () {
           // Store both the image data and its name
           const imageData = {
             data: event.target.result,
-            name: imageName
+            name: imageName,
           };
 
-          switch(fieldName) {
+          switch (fieldName) {
             case 'logo-img':
               window.logoImageUrl = imageData;
               document.querySelector('.logo img').src = imageData.data;
               break;
             case 'step0-img':
               window.step0ImageUrl = imageData;
-              document.querySelectorAll('.game__item img').forEach(img => {
+              document.querySelectorAll('.game__item img').forEach((img) => {
                 img.src = imageData.data;
               });
               break;
@@ -757,7 +787,7 @@ document.addEventListener('DOMContentLoaded', function () {
         reader.readAsDataURL(file);
       }
     });
-    
+
     wrapper.appendChild(labelElement);
     wrapper.appendChild(input);
     return wrapper;
@@ -777,9 +807,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const fonts = [
       { name: 'Montserrat', value: 'Montserrat, sans-serif' },
       { name: 'Roboto', value: 'Roboto, sans-serif' },
-      { name: 'Inter', value: 'Inter, sans-serif' }
+      { name: 'Inter', value: 'Inter, sans-serif' },
     ];
-    fonts.forEach(font => {
+    fonts.forEach((font) => {
       const option = document.createElement('option');
       option.value = font.value;
       option.textContent = font.name;
@@ -817,23 +847,23 @@ document.addEventListener('DOMContentLoaded', function () {
     wrapper.style.marginBottom = '16px';
     wrapper.style.display = 'flex';
     wrapper.style.alignItems = 'center';
-    
+
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.id = 'google-code-checkbox';
     checkbox.style.marginRight = '8px';
-    
+
     const label = document.createElement('label');
     label.textContent = 'Код гугла';
     label.style.fontWeight = '500';
     label.style.cursor = 'pointer';
-    
+
     // Проверяем, есть ли уже класс final-btn у кнопки
     const finalBtn = document.querySelector('.final_btn');
     if (finalBtn && finalBtn.classList.contains('final-btn')) {
       checkbox.checked = true;
     }
-    
+
     checkbox.addEventListener('change', (e) => {
       if (finalBtn) {
         if (e.target.checked) {
@@ -844,7 +874,7 @@ document.addEventListener('DOMContentLoaded', function () {
       }
       updateContent();
     });
-    
+
     wrapper.appendChild(checkbox);
     wrapper.appendChild(label);
     return wrapper;
@@ -857,23 +887,23 @@ document.addEventListener('DOMContentLoaded', function () {
     wrapper.style.marginBottom = '16px';
     wrapper.style.display = 'flex';
     wrapper.style.alignItems = 'center';
-    
+
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.id = 'footer-checkbox';
     checkbox.style.marginRight = '8px';
-    
+
     const label = document.createElement('label');
     label.textContent = 'Скрыть политику';
     label.style.fontWeight = '500';
     label.style.cursor = 'pointer';
-    
+
     // Проверяем, скрыт ли уже footer
     const footer = document.querySelector('.footer');
     if (footer && footer.style.display === 'none') {
       checkbox.checked = true;
     }
-    
+
     checkbox.addEventListener('change', (e) => {
       if (footer) {
         if (e.target.checked) {
@@ -884,9 +914,43 @@ document.addEventListener('DOMContentLoaded', function () {
       }
       updateContent();
     });
-    
+
     wrapper.appendChild(checkbox);
     wrapper.appendChild(label);
+    return wrapper;
+  }
+
+  // Функция создания загрузчика фонового изображения для .main
+  function createMainBgUploader(label, fieldName) {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'editor-field';
+
+    const labelElement = document.createElement('label');
+    labelElement.textContent = label;
+
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.className = 'editor-input';
+    input.id = fieldName;
+
+    input.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          window.mainBgImageUrl = event.target.result;
+          document.querySelector('.main').style.backgroundImage = `url('${window.mainBgImageUrl}')`;
+          document.querySelector('.main').style.backgroundSize = 'cover';
+          document.querySelector('.main').style.backgroundPosition = 'center';
+          saveToLocalStorage();
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    wrapper.appendChild(labelElement);
+    wrapper.appendChild(input);
     return wrapper;
   }
 
@@ -901,27 +965,34 @@ document.addEventListener('DOMContentLoaded', function () {
 
   sections.popup2.appendChild(createInputField('Заголовок второго попапа', 'popup2-title'));
   sections.popup2.appendChild(createInputField('Подзаголовок второго попапа', 'popup2-subtitle'));
-  sections.popup2.appendChild(createInputField('Заголовок "Here\'s what to do next:"', 'popup2-next-title'));
+  sections.popup2.appendChild(
+    createInputField('Заголовок "Here\'s what to do next:"', 'popup2-next-title'),
+  );
   sections.popup2.appendChild(createInputField('Инструкции второго попапа', 'popup2-instructions'));
   sections.popup2.appendChild(createInputField('Текст финальной кнопки', 'final-btn-text'));
 
   sections.images.appendChild(createImageUploader('Логотип', 'logo-img'));
   sections.images.appendChild(createImageUploader('Изображение коробки (начальное)', 'step0-img'));
-  sections.images.appendChild(createImageUploader('Изображение коробки (после первого клика)', 'step1-img'));
-  sections.images.appendChild(createImageUploader('Изображение коробки (после второго клика)', 'step2-img'));
+  sections.images.appendChild(
+    createImageUploader('Изображение коробки (после первого клика)', 'step1-img'),
+  );
+  sections.images.appendChild(
+    createImageUploader('Изображение коробки (после второго клика)', 'step2-img'),
+  );
 
   sections.colors.appendChild(createInputField('Цвет фона баннера', 'banner-bg-color', 'color'));
   sections.colors.appendChild(createInputField('Цвет фона страницы', 'background-color', 'color'));
   sections.colors.appendChild(createFontFamilySelector('Семейство шрифта', 'font-family'));
   sections.colors.appendChild(createGoogleCodeCheckbox());
   sections.colors.appendChild(createFooterCheckbox());
+  sections.colors.appendChild(createMainBgUploader('Фоновое изображение', 'main-bg-img'));
 
   // Добавляем поля для размеров
   sections.images.appendChild(createInputField('Размер логотипа (px)', 'logo-size', 'number'));
   sections.images.appendChild(createInputField('Размер коробок (px)', 'game-item-size', 'number'));
 
   // Добавляем секции в панель редактирования
-  Object.values(sections).forEach(section => {
+  Object.values(sections).forEach((section) => {
     editorPanel.appendChild(section);
   });
 
@@ -974,7 +1045,9 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 
   resetButton.addEventListener('click', () => {
-    if (confirm('Вы уверены, что хотите вернуться к базовой версии? Все изменения будут потеряны.')) {
+    if (
+      confirm('Вы уверены, что хотите вернуться к базовой версии? Все изменения будут потеряны.')
+    ) {
       localStorage.setItem('templateSettings', '');
       localStorage.removeItem('templateSettings');
       location.reload();
@@ -1012,7 +1085,8 @@ document.addEventListener('DOMContentLoaded', function () {
       logoImage: window.logoImageUrl,
       step0Image: window.step0ImageUrl,
       step1Image: window.step1ImageUrl,
-      step2Image: window.step2ImageUrl
+      step2Image: window.step2ImageUrl,
+      mainBgImage: window.mainBgImageUrl,
     };
     localStorage.setItem('templateSettings', JSON.stringify(settings));
   }
@@ -1023,7 +1097,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (savedSettings) {
       try {
         const settings = JSON.parse(savedSettings);
-        
+
         // Заполняем все поля
         document.getElementById('banner-title').value = settings.bannerTitle || '';
         document.getElementById('banner-text').value = settings.bannerText || '';
@@ -1039,7 +1113,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('game-item-size').value = settings.gameItemSize || '100';
         document.getElementById('banner-bg-color').value = settings.bannerBgColor || '#ffffff';
         document.getElementById('background-color').value = settings.backgroundColor || '#ffffff';
-        
+
         // Восстанавливаем изображения
         if (settings.logoImage) {
           window.logoImageUrl = settings.logoImage;
@@ -1047,7 +1121,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         if (settings.step0Image) {
           window.step0ImageUrl = settings.step0Image;
-          document.querySelectorAll('.game__item img').forEach(img => {
+          document.querySelectorAll('.game__item img').forEach((img) => {
             img.src = settings.step0Image.data;
           });
         }
@@ -1059,7 +1133,13 @@ document.addEventListener('DOMContentLoaded', function () {
           window.step2ImageUrl = settings.step2Image;
           document.querySelector('#popup2 img').src = settings.step2Image.data;
         }
-        
+        if (settings.mainBgImage) {
+          window.mainBgImageUrl = settings.mainBgImage;
+          document.querySelector('.main').style.backgroundImage = `url('${settings.mainBgImage}')`;
+          document.querySelector('.main').style.backgroundSize = 'cover';
+          document.querySelector('.main').style.backgroundPosition = 'center';
+        }
+
         // Обновляем контент
         updateContent();
       } catch (error) {
@@ -1070,7 +1150,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function updateContent() {
     // Обновляем текстовые поля
-    document.querySelectorAll('[data-field]').forEach(element => {
+    document.querySelectorAll('[data-field]').forEach((element) => {
       const fieldId = element.getAttribute('data-field');
       const input = document.getElementById(fieldId);
       if (input) {
@@ -1105,7 +1185,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Обновляем только начальное состояние банков
-    gameItems.forEach(item => {
+    gameItems.forEach((item) => {
       if (window.step0ImageUrl) {
         item.src = window.step0ImageUrl.data;
       }
@@ -1138,10 +1218,18 @@ document.addEventListener('DOMContentLoaded', function () {
       logoImg.style.height = 'auto';
     }
 
-    gameItems.forEach(item => {
+    gameItems.forEach((item) => {
       item.style.width = `${gameItemSize}px`;
       item.style.height = 'auto';
     });
+
+    // Обновляем фон .main
+    if (window.mainBgImageUrl) {
+      const main = document.querySelector('.main');
+      main.style.backgroundImage = `url('${window.mainBgImageUrl}')`;
+      main.style.backgroundSize = 'cover';
+      main.style.backgroundPosition = 'center';
+    }
 
     // Сохраняем изменения
     saveToLocalStorage();
@@ -1151,7 +1239,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function previewImage(input, previewElement) {
     if (input.files && input.files[0]) {
       const reader = new FileReader();
-      reader.onload = function(e) {
+      reader.onload = function (e) {
         previewElement.src = e.target.result;
       };
       reader.readAsDataURL(input.files[0]);
@@ -1159,11 +1247,11 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   // Добавляем предпросмотр для всех загрузчиков изображений
-  document.getElementById('logo-img').addEventListener('change', function() {
+  document.getElementById('logo-img').addEventListener('change', function () {
     previewImage(this, document.querySelector('.logo img'));
   });
 
-  document.getElementById('step0-img').addEventListener('change', function() {
+  document.getElementById('step0-img').addEventListener('change', function () {
     const preview = document.querySelector('.game__item img');
     previewImage(this, preview);
   });
@@ -1174,7 +1262,7 @@ document.addEventListener('DOMContentLoaded', function () {
   //   previewImage(this, preview);
   // });
 
-  document.getElementById('step2-img').addEventListener('change', function() {
+  document.getElementById('step2-img').addEventListener('change', function () {
     const preview = document.querySelector('#popup2 img');
     previewImage(this, preview);
   });
@@ -1191,7 +1279,7 @@ document.addEventListener('DOMContentLoaded', function () {
       // Проверяем, что текущее изображение - это step0.png
       const isDefaultStep0 = img.src.includes('step0.png');
       const isCustomStep0 = window.step0ImageUrl && img.src === window.step0ImageUrl.data;
-      
+
       if (!isDefaultStep0 && !isCustomStep0) return;
 
       if (prizeIndex === 1) {
@@ -1206,28 +1294,39 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   });
 
-  downloadButton.addEventListener('click', async function() {
+  downloadButton.addEventListener('click', async function () {
     // Get the current HTML content
     let htmlContent = document.documentElement.outerHTML;
-    
+
     // Remove the authentication script
-    htmlContent = htmlContent.replace(/<script>\s*\/\/ Check if user is authenticated[\s\S]*?<\/script>/g, '');
-    
+    htmlContent = htmlContent.replace(
+      /<script>\s*\/\/ Check if user is authenticated[\s\S]*?<\/script>/g,
+      '',
+    );
+
     // Remove the auth.js script loading
-    htmlContent = htmlContent.replace(/<script>\s*\/\/ Load auth script only in web version[\s\S]*?<\/script>/g, '');
-    
+    htmlContent = htmlContent.replace(
+      /<script>\s*\/\/ Load auth script only in web version[\s\S]*?<\/script>/g,
+      '',
+    );
+
     // Remove the "Назад" button
     htmlContent = htmlContent.replace(/<a href="home\.html" class="logout-button">Назад<\/a>/g, '');
-    
+
     // Remove editor panel and toggle button
     htmlContent = htmlContent.replace(/<button class="editor-toggle">.*?<\/button>/g, '');
     htmlContent = htmlContent.replace(/<div class="editor-panel">[\s\S]*?<\/div>/g, '');
-    
+
     // Add display:none style for editor panel
-    htmlContent = htmlContent.replace(/<style>/g, '<style>\n.editor-panel { display: none !important; }\n');
-    
+    htmlContent = htmlContent.replace(
+      /<style>/g,
+      '<style>\n.editor-panel { display: none !important; }\n',
+    );
+
     // Add final button click handler script
-    htmlContent = htmlContent.replace(/<\/body>/g, `
+    htmlContent = htmlContent.replace(
+      /<\/body>/g,
+      `
     <script>
       document.addEventListener('DOMContentLoaded', function () {
         const button = document.querySelector('.final_btn');
@@ -1241,8 +1340,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       });
     </script>
-    </body>`);
-    
+    </body>`,
+    );
+
     // Restore original image paths
     htmlContent = htmlContent.replace(/src="data:image\/[^"]+"/g, (match) => {
       const img = document.querySelector(`img[src="${match.slice(5, -1)}"]`);
@@ -1257,14 +1357,13 @@ document.addEventListener('DOMContentLoaded', function () {
       }
       return match;
     });
-    
+
     // Create a zip file
     const zip = new JSZip();
-    
-    // Add the modified HTML file
-    zip.file("index.html", htmlContent);
 
-    
+    // Add the modified HTML file
+    zip.file('index.html', htmlContent);
+
     // Add other necessary files
     const files = [
       'styles/null.css',
@@ -1272,9 +1371,9 @@ document.addEventListener('DOMContentLoaded', function () {
       'styles/popup.css',
       'js/toggle.js',
       'policy.html',
-      'terms.html'
+      'terms.html',
     ];
-    
+
     // Add each file to the zip
     for (const file of files) {
       try {
@@ -1364,7 +1463,7 @@ gameItems.forEach((item) => {
       { data: window.logoImageUrl, name: 'logo.png' },
       { data: window.step0ImageUrl, name: 'step0.png' },
       { data: window.step1ImageUrl, name: 'step1.png' },
-      { data: window.step2ImageUrl, name: 'step2.png' }
+      { data: window.step2ImageUrl, name: 'step2.png' },
     ];
 
     for (const image of images) {
@@ -1379,17 +1478,16 @@ gameItems.forEach((item) => {
         }
       }
     }
-    
+
     // Generate and download the zip file
-    zip.generateAsync({type: "blob"})
-      .then(function(content) {
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(content);
-        link.download = "template.zip";
-        link.click();
-      });
-  }); 
-}); 
+    zip.generateAsync({ type: 'blob' }).then(function (content) {
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(content);
+      link.download = 'template.zip';
+      link.click();
+    });
+  });
+});
 
 // Вспомогательная функция для перевода rgb в hex
 function rgb2hex(rgb) {
@@ -1402,4 +1500,4 @@ function rgb2hex(rgb) {
       .toString(16)
       .slice(1)
   );
-} 
+}
