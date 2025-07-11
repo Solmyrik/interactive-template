@@ -1296,6 +1296,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
   downloadButton.addEventListener('click', async function () {
     // Get the current HTML content
+    const myGame = document.querySelector('.game');
+    myGame.style.pointerEvents = 'auto';
+    
     let htmlContent = document.documentElement.outerHTML;
 
     // Remove the authentication script
@@ -1342,6 +1345,8 @@ document.addEventListener('DOMContentLoaded', function () {
     </script>
     </body>`,
     );
+
+    
 
     // Restore original image paths
     htmlContent = htmlContent.replace(/src="data:image\/[^"]+"/g, (match) => {
